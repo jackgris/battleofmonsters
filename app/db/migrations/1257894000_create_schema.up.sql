@@ -11,6 +11,7 @@ CREATE TABLE `battles` (
 
 CREATE TABLE `monsters` (
   `id` integer,
+  `name` TEXT NOT NULL,
   `attack` integer NOT NULL,
   `defense` integer NOT NULL,
   `hp` integer NOT NULL,
