@@ -12,7 +12,11 @@ linters-settings:
       - '.*'
   varnamelen:
     min-name-length: 1
-
+  depguard:
+    rules:
+      main:
+        files:
+          - $all
 issues:
   exclude-rules:
     - path: migrations/...
@@ -34,16 +38,16 @@ issues:
     - text: TODO
       linters:
         - godox
-  
-linters:
-  enable-all: true
-  disable:
-    - exhaustivestruct
-    - gci
-    - paralleltest
-    - gofumpt
 
-    # deprecated
-    - interfacer
-    - scopelint
-    - maligned
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - wsl
+    - exhaustruct
+    - gochecknoinits
+    - forbidigo
+    - wrapcheck
+    - nestif
+    - gochecknoglobals
+    - godox
