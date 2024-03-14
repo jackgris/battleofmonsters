@@ -23,6 +23,7 @@ func Router() *gin.Engine {
 	battle := server.Group("/battle")
 	{
 		battle.GET("", controller.ListBattles)
+		battle.DELETE("/:battleID", controller.DeleteBattle)
 	}
 
 	// Monters routes

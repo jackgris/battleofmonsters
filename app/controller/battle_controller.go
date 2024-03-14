@@ -23,3 +23,21 @@ func ListBattles(context *gin.Context) {
 	log.Printf("Found %v battles", result.RowsAffected)
 	context.JSON(http.StatusOK, &battle)
 }
+
+func DeleteBattle(context *gin.Context) {
+	battleID := context.Param("battleID")
+
+	var battle models.Battle
+
+	if result := db.CONN.First(&battle, battleID); result.Error != nil {
+		context.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	if result := db.CONN.Delete(&models.Monster{}, battleID); result.Error != nil {
+		context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": result.Error})
+		return
+	}
+
+	context.Status(http.StatusNoContent)
+}
