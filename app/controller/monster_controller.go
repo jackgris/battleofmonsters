@@ -4,6 +4,7 @@ import (
 	"battle-of-monsters/app/db"
 	"battle-of-monsters/app/models"
 	"encoding/csv"
+
 	// "errors"
 	"log"
 	"mime/multipart"
@@ -11,15 +12,36 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	// "gorm.io/gorm"
 )
+
+func ListMonsters(context *gin.Context) {
+	var monsters []models.Monster
+
+	var result *gorm.DB
+
+	if result = db.CONN.Find(&monsters); result.Error != nil {
+		context.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	log.Printf("Found %v battles", result.RowsAffected)
+	context.JSON(http.StatusOK, monsters)
+}
 
 func FetchMonster(context *gin.Context) {
 	monsterID := context.Param("monsterID")
 
+	id, err := strconv.ParseInt(monsterID, 10, 32)
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
 	var monster models.Monster
-	if result := db.CONN.First(&monster, monsterID); result.Error != nil {
-		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+	if result := db.CONN.First(&monster, id); result.Error != nil {
+		context.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 		return
 	}
 
@@ -82,7 +104,7 @@ func UpdateMonster(context *gin.Context) {
 	var monster models.Monster
 
 	if result := db.CONN.First(&monster, monsterID); result.Error != nil {
-		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		context.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 		return
 	}
 
@@ -107,7 +129,7 @@ func DeleteMonster(context *gin.Context) {
 	var monster models.Monster
 
 	if result := db.CONN.First(&monster, monsterID); result.Error != nil {
-		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		context.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 		return
 	}
 

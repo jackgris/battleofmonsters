@@ -28,6 +28,7 @@ func Router() *gin.Engine {
 	// Monters routes
 	monsters := server.Group("/monsters")
 	{
+		monsters.GET("", controller.ListMonsters)
 		monsters.POST("", controller.CreateMonster)
 		monsters.POST("/import", controller.ImportCSV)
 		monsters.GET("/:monsterID", controller.FetchMonster)
