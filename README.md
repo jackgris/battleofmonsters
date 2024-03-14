@@ -7,3 +7,5 @@ ginkgo -v --focus "MonsterController" ./app/tests/controller/...
 ```
 
 Where `MonsterController` is the name of the test that you want to run, and in this case, the command is run in the root folder of the project.
+
+Project based on this [challenge](https://fullstacklabs.notion.site/Go-Coding-Challenge-Battle-of-Monsters-d2b0003cf531485a83653df76e6bc0d1)
